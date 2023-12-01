@@ -14,41 +14,38 @@ digit_words = {
 }
 
 
-def first_digit(line: str) -> str:
-    for char in line:
-        if char.isdigit():
-            return char
-    raise ValueError("Line does not contain any digit.")
-
-
-def last_digit(line: str) -> str:
-    for char in reversed(line):
-        if char.isdigit():
-            return char
-    raise ValueError("Line does not contain any digit.")
-
-def first_digit_or_word(line: str) -> str:
-    for i in range(len(line)):
+def get_digit(line: str, first: bool, allow_words: bool) -> str:
+    positions = range(len(line))
+    if not first:
+        positions = reversed(positions)
+    for i in positions:
         if line[i].isdigit():
             return line[i]
-        for digit_word, digit in digit_words.items():
-            if line[i:].startswith(digit_word):
-                return digit
+        if allow_words:
+            for digit_word, digit in digit_words.items():
+                if line[i:].startswith(digit_word):
+                    return digit
     raise ValueError("Line does not contain any digit.")
 
 
-def last_digit_or_word(line: str) -> str:
-    for i in reversed(range(len(line))):
-        if line[i].isdigit():
-            return line[i]
-        for digit_word, digit in digit_words.items():
-            if line[i:].startswith(digit_word):
-                return digit
-    raise ValueError("Line does not contain any digit.")
-
-
-part1 = sum((int(first_digit(line) + last_digit(line)) for line in lines))
-part2 = sum((int(first_digit_or_word(line) + last_digit_or_word(line)) for line in lines))
+part1 = sum(
+    (
+        int(
+            get_digit(line, first=True, allow_words=False)
+            + get_digit(line, first=False, allow_words=False)
+        )
+        for line in lines
+    )
+)
+part2 = sum(
+    (
+        int(
+            get_digit(line, first=True, allow_words=True)
+            + get_digit(line, first=True, allow_words=True)
+        )
+        for line in lines
+    )
+)
 
 
 print("Part 1:", part1)
