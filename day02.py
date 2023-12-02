@@ -20,6 +20,17 @@ def build_game_dicts(game_str: str) -> list[dict[str, int]]:
     return game_dicts
 
 
+def parse_line(line: str) -> None:
+    if not line:
+        return
+    match = re.match(r"Game (\d+): (.*)", line)
+    if match is None:
+        raise ValueError("Line was invalid")
+    game_id, game = match.groups()
+    game_id = int(game_id)
+    games[game_id] = build_game_dicts(game)
+
+
 def is_possible(game: list[dict[str, int]]) -> bool:
     for reveal in game:
         for color, count in reveal.items():
@@ -32,12 +43,9 @@ def get_power(game: list[dict[str, int]]) -> int:
     return prod(max(reveal[color] for reveal in game if color in reveal) for color in color_max)
 
 
-games = dict()
+games: dict[int, list[dict[str, int]]] = dict()
 for line in lines:
-    game_id, game = re.match(r"Game (\d+): (.*)", line).groups()
-    game_id = int(game_id)
-    games[game_id] = build_game_dicts(game)
-
+    parse_line(line)
 
 part1 = sum(game_id for game_id, game in games.items() if is_possible(game))
 part2 = sum(get_power(game) for _, game in games.items())
