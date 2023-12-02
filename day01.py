@@ -28,24 +28,10 @@ def get_digit(line: str, first: bool, allow_words: bool) -> str:
     raise ValueError("Line does not contain any digit.")
 
 
-part1 = sum(
-    (
-        int(
-            get_digit(line, first=True, allow_words=False)
-            + get_digit(line, first=False, allow_words=False)
-        )
-        for line in lines
-    )
-)
-part2 = sum(
-    (
-        int(
-            get_digit(line, first=True, allow_words=True)
-            + get_digit(line, first=True, allow_words=True)
-        )
-        for line in lines
-    )
-)
+part1 = sum((int(get_digit(line, first=True, allow_words=False) +
+            get_digit(line, first=False, allow_words=False))for line in lines))
+part2 = sum((int(get_digit(line, first=True, allow_words=True) +
+            get_digit(line, first=True, allow_words=True))for line in lines))
 
 
 print("Part 1:", part1)
