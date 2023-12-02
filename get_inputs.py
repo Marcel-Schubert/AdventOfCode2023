@@ -3,8 +3,6 @@ import os
 from argparse import ArgumentParser
 from configparser import ConfigParser
 
-from cookie import COOKIE
-
 configparser = ConfigParser()
 configparser.read("config.ini")
 
