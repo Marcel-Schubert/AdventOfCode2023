@@ -13,10 +13,12 @@ for map in maps:
     mapping.sort(key=lambda x: x[1])
     mappings.append(mapping)
 
+
 def seed_to_location(x):
     for mapping in mappings:
         x = apply_mapping(mapping, x)
     return x
+
 
 def apply_mapping(mapping, x):
     for dest, src, length in mapping:
@@ -24,15 +26,16 @@ def apply_mapping(mapping, x):
             return dest - src + x
     return x
 
+
 def apply_mapping_to_range(mapping, r_start, r_length):
     """Assumes that the ranges are sorted by ascending source start"""
     ranges = []
     for dest, src, length in mapping:
         if src > r_start:
-            chunk_size = min(src-r_start, r_length)
+            chunk_size = min(src - r_start, r_length)
             ranges.append((r_start, chunk_size))
             r_start += chunk_size
-            r_length -= chunk_size 
+            r_length -= chunk_size
             if not r_length:
                 break
         if src <= r_start < src + length:
@@ -46,6 +49,7 @@ def apply_mapping_to_range(mapping, r_start, r_length):
         ranges.append((r_start, r_length))
     return ranges
 
+
 def seed_range_to_min_location(seed_ranges):
     current = seed_ranges
     for mapping in mappings:
@@ -54,7 +58,8 @@ def seed_range_to_min_location(seed_ranges):
             next += apply_mapping_to_range(mapping, start, length)
         current = next
     return min([start for start, _ in current])
-        
+
+
 locations = [seed_to_location(x) for x in initial_seeds]
 part1 = min(locations)
 

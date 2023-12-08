@@ -14,13 +14,13 @@ def is_part(row, start, end):
         return char != "." and not char.isdigit()
 
     # row above
-    if any(is_symbol(row-1, i) for i in range(start-1, end+1)):
+    if any(is_symbol(row - 1, i) for i in range(start - 1, end + 1)):
         return True
     # same row
-    if is_symbol(row, start-1) or is_symbol(row, end):
+    if is_symbol(row, start - 1) or is_symbol(row, end):
         return True
     # row below
-    if any(is_symbol(row+1, i) for i in range(start-1, end+1)):
+    if any(is_symbol(row + 1, i) for i in range(start - 1, end + 1)):
         return True
     return False
 
@@ -34,18 +34,18 @@ def add_to_adjacent_stars(num, row, start, end):
         return lines[row][col] == "*"
 
     # row above
-    for i in range(start-1, end+1):
-        if is_star(row-1, i):
-            star_adjacent_numbers[(row-1, i)].append(num)
+    for i in range(start - 1, end + 1):
+        if is_star(row - 1, i):
+            star_adjacent_numbers[(row - 1, i)].append(num)
     # same row
-    if is_star(row, start-1):
-        star_adjacent_numbers[(row, start-1)].append(num)
+    if is_star(row, start - 1):
+        star_adjacent_numbers[(row, start - 1)].append(num)
     if is_star(row, end):
         star_adjacent_numbers[(row, end)].append(num)
     # row below
-    for i in range(start-1, end+1):
-        if is_star(row+1, i):
-            star_adjacent_numbers[(row+1, i)].append(num)
+    for i in range(start - 1, end + 1):
+        if is_star(row + 1, i):
+            star_adjacent_numbers[(row + 1, i)].append(num)
 
 
 star_adjacent_numbers = defaultdict(lambda: [])

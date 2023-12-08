@@ -7,13 +7,16 @@ games = {hand: int(bid) for hand, bid in (line.split() for line in lines)}
 
 SYMBOLS = ["A", "K", "Q", "J", "T", "9", "8", "7", "6", "5", "4", "3", "2"]
 
+
 def get_symbol_rank(symbol):
     SYMBOLS = ["A", "K", "Q", "J", "T", "9", "8", "7", "6", "5", "4", "3", "2"]
     return SYMBOLS.index(symbol)
 
+
 def get_symbol_rank_p2(symbol):
     SYMBOLS = ["A", "K", "Q", "T", "9", "8", "7", "6", "5", "4", "3", "2", "J"]
     return SYMBOLS.index(symbol)
+
 
 def get_hand_type(hand: str, p2: bool = False) -> int:
     counter = Counter(hand)
@@ -40,9 +43,21 @@ def get_hand_type(hand: str, p2: bool = False) -> int:
         case 1, 1:
             return 7
     raise ValueError("Hand did not match any type.")
-    
-ordered = sorted(list(games.keys()), reverse=True, key = lambda hand: (get_hand_type(hand), [get_symbol_rank(c) for c in hand]))
-ordered_p2 = sorted(list(games.keys()), reverse=True, key = lambda hand: (get_hand_type(hand, p2=True), [get_symbol_rank_p2(c) for c in hand]))
+
+
+ordered = sorted(
+    list(games.keys()),
+    reverse=True,
+    key=lambda hand: (get_hand_type(hand), [get_symbol_rank(c) for c in hand]),
+)
+ordered_p2 = sorted(
+    list(games.keys()),
+    reverse=True,
+    key=lambda hand: (
+        get_hand_type(hand, p2=True),
+        [get_symbol_rank_p2(c) for c in hand],
+    ),
+)
 part1 = sum((rank * games[hand] for rank, hand in enumerate(ordered, start=1)))
 part2 = sum((rank * games[hand] for rank, hand in enumerate(ordered_p2, start=1)))
 

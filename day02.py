@@ -4,7 +4,7 @@ from math import prod
 with open("input/day02.txt", "r") as f:
     lines = f.readlines()
 
-color_max = {'red': 12, 'green': 13, 'blue': 14}
+color_max = {"red": 12, "green": 13, "blue": 14}
 
 
 def build_game_dicts(game_str: str) -> list[dict[str, int]]:
