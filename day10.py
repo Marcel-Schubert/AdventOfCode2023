@@ -55,6 +55,8 @@ def next_pos(pos: Pos) -> tuple[Pos, Pos]:
         case "S":
             replace_s_pos(pos)
             return next_pos(pos)
+        case _:
+            raise ValueError(f"Unexpected symbol: {symbol}.")
 
 
 start_pos = find_start_pos()
