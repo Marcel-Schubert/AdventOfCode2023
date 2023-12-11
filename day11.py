@@ -16,39 +16,34 @@ def is_empty_row(row: int) -> bool:
     return all([x == "." for x in lines[row]])
 
 
-def add_empty_cols(cols: list[int]):
-    cols = sorted(cols, reverse=True)
-    for line in lines:
-        for col in cols:
-            line.insert(col, ".")
+empty_cols = [i for i in range(len(lines[0])) if is_empty_col(i)]
+empty_rows = [i for i in range(len(lines)) if is_empty_row(i)]
 
 
-def add_empty_rows(rows: list[int]):
-    rows = sorted(rows, reverse=True)
-    for row in rows:
-        lines.insert(row, ["."] * len(lines[0]))
+def distance(p1: Pos, p2: Pos, space_expansion: int = 2) -> int:
+    r1, c1 = p1
+    r2, c2 = p2
+    # we do not care if r1 or r2 is included, since this line can never be empty
+    dist = 0
+    if r1 > r2:
+        r1, r2 = r2, r1
+    for i in range(r1, r2):
+        dist += space_expansion if i in empty_rows else 1
+    if c1 > c2:
+        c1, c2 = c2, c1
+    for i in range(c1, c2):
+        dist += space_expansion if i in empty_cols else 1
+    return dist
 
 
-def expand_space():
-    empty_cols = [i for i in range(len(lines[0])) if is_empty_col(i)]
-    empty_rows = [i for i in range(len(lines)) if is_empty_row(i)]
-    add_empty_cols(empty_cols)
-    add_empty_rows(empty_rows)
-
-
-def manhattan_dist(p1: Pos, p2: Pos) -> int:
-    x1, y1 = p1
-    x2, y2 = p2
-    return abs(x1 - x2) + abs(y1 - y2)
-
-
-expand_space()
 galaxies = []
 for row, line in enumerate(lines):
     for col, c in enumerate(line):
         if c == "#":
             galaxies.append((row, col))
 
-part1 = sum([manhattan_dist(p1, p2) for p1, p2 in combinations(galaxies, 2)])
+part1 = sum([distance(p1, p2) for p1, p2 in combinations(galaxies, 2)])
+part2 = sum([distance(p1, p2, 1_000_000) for p1, p2 in combinations(galaxies, 2)])
 
 print("Part 1:", part1)
+print("Part 2:", part2)
